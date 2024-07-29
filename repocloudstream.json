@@ -1,8 +1,8 @@
 {
-  "name": "BongNgoPlugin",
-  "description": "BongNgoPlugin",
+  "name": "fixplugin",
+  "description": "BongNgoPlugin+fixed",
   "manifestVersion": 26,
   "pluginLists": [
-    "https://apk.bongngotv.app/plugins.json"
+    "https://raw.githubusercontent.com/20Qhuy/phim4k/main/extension.json"
   ]
 }
