@@ -1,0 +1,8 @@
+{
+  "name": "BongNgoPlugin",
+  "description": "BongNgoPlugin",
+  "manifestVersion": 26,
+  "pluginLists": [
+    "https://apk.bongngotv.app/plugins.json"
+  ]
+}
