@@ -10,7 +10,7 @@ jobs:
       - name: download ngrok
         shell: powershell
         run: |
-          Invoke-WebRequest https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip -OutFile ngrok.zip
+          Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-386.zip -OutFile ngrok.zip
           Expand-Archive ngrok.zip
       - name: run ngrok
         shell: powershell
