@@ -30,7 +30,5 @@ jobs:
         run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssword123" -Force)
         
       - name: Get Ngrok 
-        run: Invoke-WebRequest http://localhost:4040/api/tunnels
-        
-      - name: Run loop
-        run: ping -t localhost
+        run: .\ngrok\ngrok.exe tcp 3389
+    
