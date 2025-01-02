@@ -1,8 +1,0 @@
-{
-  "name": "fixplugin",
-  "description": "BongNgoPlugin+fixed",
-  "manifestVersion": 26,
-  "pluginLists": [
-    "https://raw.githubusercontent.com/20Qhuy/phim4k/main/extension.json"
-  ]
-}
