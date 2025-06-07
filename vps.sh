@@ -7,8 +7,6 @@ clear
 echo "Windows 11 by Avishkar"
 echo Your RDP IP Address:
 curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*public_url":"tcp:..([^"]*).*/\1/p'
-echo User: Administrator
-echo Password: Thuonghai001
 echo Wait 2-4m VM boot up before connect. 
 echo Do not close the tab. VM expired in 1 hour.
 echo Go and Follow on GitHub --> https://github.com/proavipatil
