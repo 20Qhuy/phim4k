@@ -1,2 +1,14 @@
-echo run qemu
-sudo qemu-system-x86_64 -M q35,nvdimm=on -device qemu-xhci -device usb-tablet -device usb-kbd -cpu qemu64,+avx,+avx2,+avx512-4fmaps,+avx512-4vnniw,+avx512-bf16,+avx512-fp16,+avx512-vp2intersect,+avx512-vpopcntdq,+avx512bitalg,+avx512bw,+avx512cd,+avx512dq,+avx512er,+avx512f,+avx512ifma,+avx512pf,+avx512vbmi,+avx512vbmi2,+avx512vl,+avx512vnni,+avx-ifma,+avx-ne-convert,+avx-vnni,+avx-vnni-int8,+3dnow,+3dnowext,+3dnowprefetch,+sse,+sse2,+sse4.1,+sse4.2,+popcnt,hv-relaxed -smp sockets=1,cores=4,threads=2 -overcommit mem-lock=off -m 3048M,slots=8,maxmem=3049M -object memory-backend-ram,size=381M,id=m0 -numa node,nodeid=0,memdev=m0,cpus=0 -object memory-backend-ram,size=381M,id=m1 -numa node,nodeid=1,memdev=m1,cpus=1 -object memory-backend-ram,size=381M,id=m2 -numa node,nodeid=2,memdev=m2,cpus=2 -object memory-backend-ram,size=381M,id=m3 -numa node,nodeid=3,memdev=m3,cpus=3 -object memory-backend-ram,size=381M,id=m4 -numa node,nodeid=4,memdev=m4,cpus=4 -object memory-backend-ram,size=381M,id=m5 -numa node,nodeid=5,memdev=m5,cpus=5 -object memory-backend-ram,size=381M,id=m6 -numa node,nodeid=6,memdev=m6,cpus=6 -object memory-backend-ram,size=381M,id=m7 -numa node,nodeid=7,memdev=m7,cpus=7 -drive file=wins.qcow2,aio=threads,cache=writeback -cdrom /win.iso -vga none -device virtio-gpu-gl-pci,max_hostmem= -device ich9-intel-hda -device hda-duplex -device e1000e,netdev=n0 -netdev user,id=n0 -accel tcg,tb-size=2048 -device virtio-balloon-pci -device intel-iommu -monitor stdio -vnc :2
+availableRAMcommand="free -m | tail -2 | head -1 | awk '{print \$7}'"
+availableRAM=$(echo $availableRAMcommand | bash)
+custom_param_ram="-m "$(expr $availableRAM - 856 )"M"
+cpus=$(lscpu | grep CPU\(s\) | head -1 | cut -f2 -d":" | awk '{$1=$1;print}')
+nohup sudo /usr/libexec/qemu-kvm -nographic -net nic -net user,hostfwd=tcp::30889-:3389 -show-cursor $custom_param_ram -localtime -enable-kvm -cpu host,hv_relaxed,hv_spinlocks=0x1fff,hv_vapic,hv_time,+nx -M pc -smp cores=$cpus -vga std -machine type=pc,accel=kvm -usb -device usb-tablet -k en-us -cdrom win.iso -drive file=win.qcow2,index=0,media=disk,format=qcow2 -boot once=d &>/dev/null &
+clear
+echo "Windows 11 by Avishkar"
+echo Your RDP IP Address:
+curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*public_url":"tcp:..([^"]*).*/\1/p'
+echo User: Administrator
+echo Password: Thuonghai001
+echo Wait 2-4m VM boot up before connect. 
+echo Do not close the tab. VM expired in 1 hour.
+echo Go and Follow on GitHub --> https://github.com/proavipatil
