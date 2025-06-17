@@ -1,12 +1,1 @@
-availableRAMcommand="free -m | tail -2 | head -1 | awk '{print \$7}'"
-availableRAM=$(echo $availableRAMcommand | bash)
-custom_param_ram="-m "$(expr $availableRAM - 856 )"M"
-cpus=$(lscpu | grep CPU\(s\) | head -1 | cut -f2 -d":" | awk '{$1=$1;print}')
-sudo qemu -nographic -net nic -net -show-cursor $custom_param_ram -localtime -enable-kvm -cpu host,hv_relaxed,hv_spinlocks=0x1fff,hv_vapic,hv_time,+nx -M pc -smp cores=$cpus -vga std -machine type=pc,accel=kvm -usb -device usb-tablet -k en-us -cdrom win.iso -drive file=win.qcow2,index=0,media=disk,format=qcow2 -boot once=d &>/dev/null &
-clear
-echo "Windows 11 by Avishkar"
-echo Your RDP IP Address:
-curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*public_url":"tcp:..([^"]*).*/\1/p'
-echo Wait 2-4m VM boot up before connect. 
-echo Do not close the tab. VM expired in 1 hour.
-echo Go and Follow on GitHub --> https://github.com/proavipatil
+sudo qemu-system-x86_64 -M q35 -usb -device qemu-xhci -device usb-tablet -device usb-kbd -cpu qemu64,+sse,+sse2,+sse4.1,+sse4.2,+pae,hv-relaxed -smp sockets=1,cores=16,threads=1 -m 40282M -drive file=disk.qcow2,aio=threads,cache=writeback,if=none,id=hda -device ahci,id=hdaahci -device ide-hd,drive=hda,bus=hdaahci.0 -drive file=win.iso,media=cdrom,if=none,id=cdrom0 -device ide-cd,drive=cdrom0,bus=ide.0 -vga std -device ich9-intel-hda -device hda-duplex -device e1000e,netdev=n0 -netdev user,id=n0 -accel tcg -device virtio-serial-pci -boot d,menu=on -device intel-iommu -device virtio-gpu-gl-pci,hostmem=8G,blob=true,venus=true -vnc :0
