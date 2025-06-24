@@ -17,4 +17,4 @@ echo "Note: Use Right-Click Or Ctrl+C To Copy"
 echo "Please Keep Colab Tab Open, Maximum Time 12h"
 echo Script by 20.qhuy
 echo Starting Windows xxxz...
-qemu-system-x86_64 -vnc :0 -hda  -smp cores=4 -m 8096M -machine usb=on -drive file=win.qcow2,aio=threads,cache=writeback,if=none,id=hda -device ahci,id=hdaahci -device ide-hd,drive=hda,bus=hdaahci.0 -cdrom win.iso -device e1000e,netdev=n0 -netdev user,id=n0 -device usb-tablet
+qemu-system-x86_64 -M q35 -usb -device qemu-xhci -device usb-tablet -device usb-kbd -cpu qemu64,sockets=1,cores=4,threads=1 -m 8G -drive file=win.qcow2,aio=threads,cache=writeback,if=none,id=hda -device ahci,id=hdaahci -device ide-hd,drive=hda,bus=hdaahci.0 -cdrom win.iso -vga std -device ich9-intel-hda -device hda-duplex -boot d -vga virtio -device e1000e,netdev=n0 -netdev user,id=n0 -accel tcg -device virtio-serial-pci -device intel-iommu -vnc :0
