@@ -5,7 +5,7 @@ curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc \
   && apt update \
   && apt install ngrok > /dev/null 2>&1
 ngrok config add-authtoken 2MWv85utwyi9ItXxwvdn948ytGR_7q5h1JLXmpMiyW1v4mXZn  
-nohup ngrok tcp 3389 &>/dev/null &
+nohup ngrok tcp 5900 &>/dev/null &
 echo Please wait for installing new 10...
 apt update -y > /dev/null 2>&1
 echo "Installing QEMU (2-3m)..."
@@ -16,12 +16,4 @@ curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*publ
 echo "Note: Use Right-Click Or Ctrl+C To Copy"
 echo "Please Keep Colab Tab Open, Maximum Time 12h"
 echo Starting Windows xxxz...
-qemu-system-x86_64 \
--net nic -net user,hostfwd=tcp::3389-:3389 \
--m 12G -smp cores=4 \
--cpu max \
--boot order=d \
--drive file=win.img,format=raw,if=virtio \
--device usb-ehci,id=usb,bus=pci.0,addr=0x4 \
--device usb-tablet \
--vnc :0 -vga virtio
+qemu-system-x86_64 -M q35 -usb -device qemu-xhci -device usb-tablet -device usb-kbd -cpu qemu64,+sse,+sse2,+sse4.1,+sse4.2,+pae,hv-relaxed -smp sockets=1,cores=4,threads=1 -m 4G  -drive format=raw,file=win.img -vga std -device ich9-intel-hda -device hda-duplex -device e1000e,netdev=n0 -netdev user,id=n0 -accel tcg -device virtio-serial-pci -boot d,menu=on -device intel-iommu -vnc :0
