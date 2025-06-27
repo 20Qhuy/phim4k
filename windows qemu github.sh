@@ -16,4 +16,13 @@ curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*publ
 echo "Note: Use Right-Click Or Ctrl+C To Copy"
 echo "Please Keep Colab Tab Open, Maximum Time 12h"
 echo Starting Windows xxxz...
-qemu-system-x86_64 -vnc :0 -net nic -net user,hostfwd=tcp::3389-:3389 -drive format=raw,file=win.img -smp cores=16 -m 32G -machine usb=on -device e1000e,netdev=n0 -netdev user,id=n0 -accel tcg -device virtio-serial-pci -device usb-tablet
+qemu-system-x86_64 \
+-net nic -net user,hostfwd=tcp::3389-:3389 \
+-m 12G -smp cores=4 \
+-cpu max \
+-enable-kvm \
+-boot order=d \
+-drive file=win.img,format=raw,if=virtio \
+-device usb-ehci,id=usb,bus=pci.0,addr=0x4 \
+-device usb-tablet \
+-vnc :0 -vga virtio
