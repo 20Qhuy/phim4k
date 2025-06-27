@@ -23,4 +23,4 @@ echo "Note: Use Right-Click Or Ctrl+C To Copy"
 echo "Please Keep Colab Tab Open, Maximum Time 12h"
 echo Starting Windows xxxz...
 sudo su
-sudo qemu-system-x86_64 -vnc :0 -drive format=raw,file=win.img -smp cores=16 -m 32G -machine usb=on -device e1000e,netdev=n0 -netdev user,id=n0
+sudo qemu-system-x86_64 -vnc :0 -drive format=raw,file=win.img -smp cores=4 -m 8G -machine usb=on -device e1000e,netdev=n0 -netdev user,id=n0
