@@ -1,20 +1,25 @@
-name: VPS
-on:
-  workflow_dispatch:
+name: CI
+
+on: [push, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+
+    runs-on: windows-latest
+
     steps:
-    - name: install ngrok
-        run: curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list && sudo apt update && sudo apt install ngrok
-        run: ngrok config add-authtoken 2MWv85utwyi9ItXxwvdn948ytGR_7q5h1JLXmpMiyW1v4mXZn
-        run: ngrok tcp 3389
-    - name: install windows
-        run: wget -O win.iso "http://drive.muavps.net/iso/Windows_Server_2022.iso"
-        run: sudo apt install qemu-kvm -y
-        run: qemu-img create -f raw win.img
-        run: qemu-img create -f raw win.img 60G
-        run: wget -O bios64.bin "https://github.com/BlankOn/ovmf-blobs/raw/master/bios64.bin"
-    - name: run vps
-        run: sudo qemu-system-x86_64 -m 12G -cpu host -boot order=c -drive file=win.iso,media=cdrom -drive file=win.img,format=raw -device usb-ehci,id=usb,bus=pci.0,addr=0x4 -device usb-tablet -vnc :0 -smp cores=4 -device rtl8139,netdev=n0 -netdev user,id=n0 -vga qxl -accel kvm -bios bios64.bin
+    - name: Download
+      run: Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok.zip
+    - name: Extract
+      run: Expand-Archive ngrok.zip
+    - name: Auth
+      run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
+      env:
+        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+    - name: Enable TS
+      run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
+    - run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+    - run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+    - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "Datnguyentv.com" -Force)
+    - name: Create Tunnel
+      run: .\ngrok\ngrok.exe tcp 3389
