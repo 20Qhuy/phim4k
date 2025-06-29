@@ -16,4 +16,5 @@ curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*publ
 echo "Note: Use Right-Click Or Ctrl+C To Copy"
 echo "Please Keep Colab Tab Open, Maximum Time 12h"
 echo Starting Windows xxxz...
-qemu-system-x86_64 -cpu max -smp 64 -m 32G -drive file=win.img,format=raw,index=0,media=disk -device ich9-intel-hda -device hda-duplex -device ahci,id=hdaahci -device virtio-gpu-pci -accel tcg -device e1000e,netdev=n0 -netdev user,id=n0 -device virtio-serial-pci -vnc :0 -net user,hostfwd=tcp::2222-:22
+
+qemu-system-x86_64 -M q35 -usb -device qemu-xhci -device usb-tablet -device usb-kbd -cpu x86_64,+pae -smp sockets=4,cores=64,threads=2 -m 32G -drive file=/home/user/Android/Sdk/disk.qcow2,aio=threads,cache=writeback,if=none,id=hda -device ahci,id=hdaahci -device ide-hd,drive=hda,bus=hdaahci.0 -cdrom virtio.iso -device virtio-gpu-pci -device ich9-intel-hda -device hda-duplex -device virtio-net-pci,netdev=n0 -netdev user,id=n0,hostfwd=tcp::3389-:3389 -accel tcg -device virtio-serial-pci -device intel-iommu -vnc :0
