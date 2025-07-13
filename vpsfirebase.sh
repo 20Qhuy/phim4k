@@ -5,7 +5,7 @@ nohup tailscaled --tun=userspace-networking --socket=/run/tailscale/tailscaled.s
 systemctl start tailscaled
 tailscale up
 echo "cài qemu"
-nohup apt qemu-kvm -y  >/dev/null 2>&1 &
+apt qemu-kvm -y
 echo "vps ip"
 tailscale ip --4
 echo "Administrator:Datnguyentv.com"
