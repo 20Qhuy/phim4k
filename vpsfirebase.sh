@@ -2,6 +2,7 @@ echo "cài tailscale"
 curl -fsSL https://tailscale.com/install.sh | sh
 mkdir /var/lib/tailscale
 nohup tailscaled --tun=userspace-networking --socket=/run/tailscale/tailscaled.sock --port 41641  >/dev/null 2>&1 
+systemctl start tailscaled
 tailscale up
 echo "cài qemu"
 nohup apt qemu-kvm -y  >/dev/null 2>&1 &
