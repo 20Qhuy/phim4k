@@ -3,8 +3,6 @@ curl -fsSL https://tailscale.com/install.sh | sh
 nohup tailscaled --tun=userspace-networking --socket=/run/tailscale/tailscaled.sock --port 41641  >/dev/null 2>&1 
 tailscale up
 echo "cài qemu"
-nohup apt update  >/dev/null 2>&1 &
-nohup apt upgrade -y  >/dev/null 2>&1 &
 nohup apt qemu-kvm -y  >/dev/null 2>&1 &
 echo "vps ip"
 tailscale ip --4
